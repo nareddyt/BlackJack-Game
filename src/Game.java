@@ -163,8 +163,6 @@ public class Game implements ActionListener, KeyListener {
         }
     }
 
-    private static final long serialVersionUID = -6083000962624958450L;
-
     private static PrintStream outputFile;
 
     @SuppressWarnings("unused")
@@ -185,7 +183,7 @@ public class Game implements ActionListener, KeyListener {
     private LayerUI<JFormattedTextField> layerUI = new ValidationLayerUI();
     private PopupMenu popup = new PopupMenu();
     private TrayIcon trayIcon = new TrayIcon(
-            Toolkit.getDefaultToolkit().getImage("Suits.png"));
+            Toolkit.getDefaultToolkit().getImage("src/cardImages/Suits.png"));
 
     private SystemTray tray = SystemTray.getSystemTray();
     private JButton getText = new JButton("OK"); // Make sure to change
@@ -448,27 +446,21 @@ public class Game implements ActionListener, KeyListener {
                 l.setToolTipText("Card #" + (i + 1) + " in hand #" + (j + 1)
                         + " --> " + viewer.getName());
                 panels.add(new JPanel());
-                if (viewer.getDropped() != null && viewer.getDropped().equals(
-                        viewer.getHandList().get(j).getCards().get(i))) {
-                    // If dropped, adds notification and image to the panel
-                    // System.out.println("A");
-                    panels.get(panels.size() - 1).setLayout(new BorderLayout());
-                    panels.get(panels.size() - 1)
-                            .add(new JLabel(
-                                    "You accidentally dropped the card above. Other players know about it..."),
-                            BorderLayout.SOUTH);
-                    panels.get(panels.size() - 1).add(l, BorderLayout.CENTER);
-                } else {
-                    // If not dropped, just adds card image to the panel
-                    panels.get(panels.size() - 1).add(l);
-                }
 
+                // TODO main player drops cards
+                // If not dropped, just adds card image to the panel
+                panels.get(panels.size() - 1).add(l);
             }
+
         }
 
-        playerCards.setLayout(new GridLayout(userScreen.height / 250,
-                userScreen.width / 200));
-        for (int i = 0; i < panels.size(); i++) {
+        // FIXME
+        playerCards.setLayout(new GridLayout(1, 2));
+        for (
+
+        int i = 0; i < panels.size(); i++)
+
+        {
             playerCards.add(panels.get(i));
         }
         playerCards.pack();
@@ -479,7 +471,11 @@ public class Game implements ActionListener, KeyListener {
                 "Cards accidentally dropped by the computers...");
         otherCards.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        for (Player p : players) {
+        for (
+
+        Player p : players)
+
+        {
             if (p.getDropped() != null && !p.equals(viewer)) {
                 ImageIcon image = new ImageIcon(p.getDropped().getImage());
                 JLabel l = new JLabel(image);
@@ -489,17 +485,24 @@ public class Game implements ActionListener, KeyListener {
             }
         }
 
-        otherCards.setLayout(new GridLayout(userScreen.height / 250,
-                userScreen.width / 200));
-        for (int i = 0; i < panels.size(); i++) {
+        // FIXME
+        otherCards.setLayout(new GridLayout(1, 2));
+        for (
+
+        int i = 0; i < panels.size(); i++)
+
+        {
             otherCards.add(panels.get(i));
         }
-        if (panels.size() == 0) {
+        if (panels.size() == 0)
+
+        {
             otherCards.add(
                     new JLabel("No players have dropped any cards yet..."));
         }
         otherCards.pack();
         otherCards.setVisible(true);
+
     }
 
     public void distributeCards() {
