@@ -1,3 +1,4 @@
+
 // Teju Nareddy, 5/5/13
 
 import java.util.ArrayList;
@@ -8,12 +9,13 @@ import java.util.ArrayList;
  * @author Teju
  *
  */
-public class Hand
-{
-	private ArrayList<Card> cards = new ArrayList<Card>();
-	
-	public ArrayList<Card> getCards() // Cards can be added, deleted, modified without a setter (object reference is the same)
-	{
-		return cards;
-	}
+public class Hand {
+    private ArrayList<Card> cards = new ArrayList<Card>();
+
+    public ArrayList<Card> getCards() // Cards can be added, deleted, modified
+                                      // without a setter (object reference is
+                                      // the same)
+    {
+        return cards;
+    }
 }
