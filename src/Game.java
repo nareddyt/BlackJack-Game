@@ -27,7 +27,6 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Random;
 
-import javax.naming.TimeLimitExceededException;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -62,58 +61,6 @@ import javax.swing.plaf.LayerUI;
  *
  */
 public class Game implements ActionListener, KeyListener {
-
-    public class Time extends Thread {
-        @Override
-        public void run() {
-            time = new JFrame("Time Played");
-            time.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            time.setLayout(new GridLayout(2, 2));
-
-            time.add(new JLabel("Minutes"));
-            JFormattedTextField secs = new JFormattedTextField(2);
-            secs.setValue(0);
-            time.add(secs);
-
-            time.add(new JLabel("Seconds"));
-            JFormattedTextField mins = new JFormattedTextField(2);
-            mins.setValue(0);
-            time.add(mins);
-
-            time.pack();
-            time.setVisible(true);
-
-            while (true) {
-                f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                while (paused) {
-                    // do nothing
-                }
-
-                seconds++;
-                if (seconds == 60) {
-                    minutes++;
-                    seconds = 0;
-                } else if (minutes >= 60) {
-                    try {
-                        throw new TimeLimitExceededException(
-                                "You are taking way too long for this game... Game ending now!");
-                    } catch (TimeLimitExceededException e) {
-                        System.out.println(
-                                "You are taking way too long for this game... Game ending now!");
-                        System.exit(1);
-                    }
-                }
-                secs.setValue(seconds);
-                mins.setValue(minutes);
-            }
-        }
-    }
-
     public class ValidationLayerUI extends LayerUI<JFormattedTextField> {
         /**
          *
@@ -234,7 +181,6 @@ public class Game implements ActionListener, KeyListener {
     private JFrame f;
     private JFrame playerCards;
     private JFrame otherCards;
-    private JFrame time;
 
     private LayerUI<JFormattedTextField> layerUI = new ValidationLayerUI();
     private PopupMenu popup = new PopupMenu();
@@ -268,9 +214,6 @@ public class Game implements ActionListener, KeyListener {
 
     public Game() // The "main" method
     {
-        Time time = new Time();
-        time.start();
-
         TextAreaOutputStream taos = new TextAreaOutputStream(outputConsole, 60);
         PrintStream ps = new PrintStream(taos);
         // TODO
@@ -411,7 +354,6 @@ public class Game implements ActionListener, KeyListener {
                             + "\nA green check if the input is correct");
         } else if (arg0.toString().contains("Reset Size")) {
             f.pack();
-            time.pack();
             f.toFront();
         } else if (arg0.toString().contains("Start Game")) {
             f.dispose();

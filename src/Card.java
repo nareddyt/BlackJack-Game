@@ -19,6 +19,7 @@ public class Card implements Comparable<Card> {
 
     private int representation;
     private Suit suit;
+    private Image img;
     private final String imageDir = "src/cardImages/";
 
     /**
@@ -31,6 +32,10 @@ public class Card implements Comparable<Card> {
     public Card(int num, Suit s) {
         representation = num;
         suit = s;
+
+        String imageString = imageDir + suit.toString() + "s_" + getRank()
+                + ".png";
+        img = Toolkit.getDefaultToolkit().getImage(imageString);
     }
 
     @Override
@@ -76,9 +81,7 @@ public class Card implements Comparable<Card> {
     }
 
     public Image getImage() {
-        String imageString = imageDir + suit.toString() + "s_" + getRank()
-                + ".png";
-        return Toolkit.getDefaultToolkit().getImage(imageString);
+        return img;
     }
 
     /**
