@@ -13,15 +13,15 @@ import java.util.Random;
 public class Player {
     public static final double SLIP_OF_HAND = 0.0525;
 
-    private ArrayList<Hand> hands = new ArrayList<Hand>();
-
-    private String name = "";
-
-    private final Random rand = new Random();
     private double bet;
-    private double money;
-    private boolean isComputer;
+
     private Card dropped = null;
+
+    private ArrayList<Hand> hands = new ArrayList<Hand>();
+    private boolean isComputer;
+    private double money;
+    private String name = "";
+    private final Random rand = new Random();
 
     public Player(String name, boolean isAi) {
         this.name = name;
@@ -36,8 +36,7 @@ public class Player {
     }
 
     public boolean equals(Player p) {
-        if (getName() == p.getName() && getMoney() == p.getMoney()
-                && getHandList().equals(p.getHandList())) {
+        if (getName() == p.getName() && getMoney() == p.getMoney() && getHandList().equals(p.getHandList())) {
             return true;
         }
         return false;

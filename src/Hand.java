@@ -12,10 +12,7 @@ import java.util.ArrayList;
 public class Hand {
     private ArrayList<Card> cards = new ArrayList<Card>();
 
-    public ArrayList<Card> getCards() // Cards can be added, deleted, modified
-                                      // without a setter (object reference is
-                                      // the same)
-    {
+    public ArrayList<Card> getCards() {
         return cards;
     }
 }

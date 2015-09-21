@@ -1,18 +1,18 @@
 import java.util.Random;
 
 // Teju Nareddy, 5/8/13
+// TODO make sure stack will not run out of cards
 
 /**
- * A class that holds multiple decks. THIS CLASS SHOULD BE USED TO DRAW CARDS,
- * NOT DECK...
+ * A class that holds multiple decks. THIS CLASS SHOULD BE USED TO DRAW CARDS, NOT DECK...
  *
  * @author Teju
  *
  */
 public class Stack {
-    private Random rand = new Random();
-
     private Deck[] decks;
+
+    private Random rand = new Random();
 
     public Stack(int numOfDecks) {
         decks = new Deck[numOfDecks];

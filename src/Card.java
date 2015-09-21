@@ -6,26 +6,24 @@ import java.awt.Image;
 import java.awt.Toolkit;
 
 /**
- * Abstract class that has four subclasses. Contains abstract and concrete
- * methods. Cannot be instantiated.
+ * Abstract class that has four subclasses. Contains abstract and concrete methods. Cannot be instantiated.
  *
  * @author Teju
  */
 public class Card implements Comparable<Card> {
 
     public static enum Suit {
-        Spade, Club, Heart, Diamond
+        Club, Diamond, Heart, Spade
     }
 
+    private final String imageDir = "src/cardImages/";
+    private Image img;
     private int representation;
     private Suit suit;
-    private Image img;
-    private final String imageDir = "src/cardImages/";
 
     /**
      * @param num
-     *            Number of the card (1 = Ace, 2 - 10 = normal, 11 = Jack, 12 =
-     *            Queen, 13 = King)
+     *            Number of the card (1 = Ace, 2 - 10 = normal, 11 = Jack, 12 = Queen, 13 = King)
      * @param s
      *            Suit s (Suit.Spade, Suit.Diamond, Suit.Club, Suit.Heart)
      */
@@ -33,17 +31,13 @@ public class Card implements Comparable<Card> {
         representation = num;
         suit = s;
 
-        String imageString = imageDir + suit.toString() + "s_" + getRank()
-                + ".png";
+        String imageString = imageDir + suit.toString() + "s_" + getRank() + ".png";
         img = Toolkit.getDefaultToolkit().getImage(imageString);
     }
 
     @Override
     /**
-     * Compares current instantiated card with explicit card. First compares the
-     * numbers, and if equal, will compare the suits. To compare suits, this
-     * method uses String.compareTo(). Overall, checks numerical, then
-     * alphabetical order for the cards.
+     * Compares current instantiated card with explicit card. First compares the numbers, and if equal, will compare the suits
      */
     public int compareTo(Card c) {
         if (getRepresentation() == c.getRepresentation()) {
@@ -56,23 +50,24 @@ public class Card implements Comparable<Card> {
     }
 
     /**
-     * Returns whether the current instantiated card is equal to the explicit
-     * card.
+     * Returns whether the current instantiated card is equal to the explicit card.
      *
      * @param c
      *            The card to check this with
-     * @return True: Number, color, and suit match False: Any of these do not
-     *         match
+     * @return True: Number, color, and suit match False: Any of these do not match
      */
     public boolean equals(Card c) {
-        if (getRepresentation() == c.getRepresentation()
-                && getColor().equals(c.getColor())
-                && getSuit() == c.getSuit()) {
+        if (getRepresentation() == c.getRepresentation() && getSuit() == c.getSuit()) {
             return true;
         }
         return false;
     }
 
+    /**
+     * Returns the color of the card
+     *
+     * @return
+     */
     public Color getColor() {
         if (suit.equals(Suit.Club) || suit.equals(Suit.Spade)) {
             return Color.BLACK;
@@ -80,13 +75,17 @@ public class Card implements Comparable<Card> {
         return Color.RED;
     }
 
+    /**
+     * Returns the card's image
+     *
+     * @return
+     */
     public Image getImage() {
         return img;
     }
 
     /**
-     * Will return the actually in-game worthiness number. Ace = 1, 2-10 = 2-10,
-     * Jack, Queen, King = 10
+     * Will return the actually in-game worthiness number. Ace = 1, 2-10 = 2-10, Jack, Queen, King = 10
      *
      * @return An integer between 1 and 10
      */
@@ -101,8 +100,7 @@ public class Card implements Comparable<Card> {
     }
 
     /**
-     * Returns a String representation of the rank of the card. Returns
-     * this.getNumber() if 2 <= this <= 10.
+     * Returns a String representation of the rank of the card. Returns this.getNumber() if 2 <= this <= 10.
      *
      * @return Ace, the number, Jack, Queen, or King
      */
@@ -118,14 +116,12 @@ public class Card implements Comparable<Card> {
         } else if (representation == 13) {
             return "King";
         } else {
-            throw new IllegalArgumentException("Card Number = " + representation
-                    + "??? Programming ERROR!");
+            throw new IllegalArgumentException("Card Number = " + representation + "??? Programming ERROR!");
         }
     }
 
     /**
-     * Returns the number representation of the card. Note: Use this.getRank()
-     * for the String representation.
+     * Returns the number representation of the card. Note: Use this.getRank() for the String representation.
      *
      * @return Ace = 1, 2 - 10 = normal, 11 = Jack, 12 = Queen, 13 = King
      */
@@ -134,7 +130,7 @@ public class Card implements Comparable<Card> {
     }
 
     /**
-     * Will return a String of the suit of the Card.
+     * Will return an enum (Suit) of the suit of the Card.
      *
      * @return Spade, Club, Heart, Diamond
      */
@@ -142,7 +138,9 @@ public class Card implements Comparable<Card> {
         return suit;
     }
 
-    // TODO
+    /**
+     * Returns a string that accurately represents the card
+     */
     @Override
     public String toString() {
         return getRank() + " of " + getSuit().toString();

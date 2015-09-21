@@ -6,8 +6,7 @@ import java.awt.Graphics;
 import javax.swing.JFrame;
 
 /**
- * Tests the Deck class, the Card class, and all of its subclasses. NOTE: THIS
- * CLASS IS ONLY FOR TESTING THE DECK. IT IS NOT PART OF THIS PROJECT.
+ * Tests the Deck class, the Card class, and all of its subclasses. NOTE: THIS CLASS IS ONLY FOR TESTING THE DECK. IT IS NOT PART OF THIS PROJECT.
  *
  * @author Teju
  *
@@ -39,8 +38,8 @@ public class DeckTester extends JFrame {
         System.out.println("\nIT WORKS");
     }
 
-    Deck deck = new Deck();
     int count = 52;
+    Deck deck = new Deck();
 
     public DeckTester() {
         super("Testing program -- Teju Nareddy");

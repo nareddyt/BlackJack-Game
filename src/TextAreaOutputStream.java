@@ -12,20 +12,19 @@ public class TextAreaOutputStream extends OutputStream {
     // INSTANCE PROPERTIES
     // *****************************************************************************
 
-    static private byte[] LINE_SEP = System.getProperty("line.separator", "\n")
-            .getBytes();
+    static private byte[] LINE_SEP = System.getProperty("line.separator", "\n").getBytes();
 
-    private JTextArea textArea; // target text area
-
-    private int maxLines; // maximum lines allowed in text area
-    private LinkedList<Integer> lineLengths; // length of lines within text area
     private int curLength; // length of current line
+
+    private LinkedList<Integer> lineLengths; // length of lines within text area
+    private int maxLines; // maximum lines allowed in text area
+    private byte[] oneByte; // array for write(int val);
 
     // *****************************************************************************
     // INSTANCE CONSTRUCTORS/INIT/CLOSE/FINALIZE
     // *****************************************************************************
 
-    private byte[] oneByte; // array for write(int val);
+    private JTextArea textArea; // target text area
 
     public TextAreaOutputStream(JTextArea ta) {
         this(ta, 1000);
@@ -37,8 +36,7 @@ public class TextAreaOutputStream extends OutputStream {
 
     public TextAreaOutputStream(JTextArea ta, int ml) {
         if (ml < 1) {
-            throw new InputMismatchException("Maximum lines of " + ml
-                    + " in TextAreaOutputStream constructor is not permitted");
+            throw new InputMismatchException("Maximum lines of " + ml + " in TextAreaOutputStream constructor is not permitted");
         }
         textArea = ta;
         maxLines = ml;
@@ -93,8 +91,7 @@ public class TextAreaOutputStream extends OutputStream {
                 lineLengths.addLast(new Integer(curLength));
                 curLength = 0;
                 if (lineLengths.size() > maxLines) {
-                    textArea.replaceRange(null, 0,
-                            lineLengths.removeFirst().intValue());
+                    textArea.replaceRange(null, 0, lineLengths.removeFirst().intValue());
                 }
             }
             for (int xa = 0; xa < 10; xa++) {
@@ -133,8 +130,7 @@ public class TextAreaOutputStream extends OutputStream {
         if (len < LINE_SEP.length) {
             return false;
         }
-        for (int xa = 0, xb = (str + len
-                - LINE_SEP.length); xa < LINE_SEP.length; xa++, xb++) {
+        for (int xa = 0, xb = (str + len - LINE_SEP.length); xa < LINE_SEP.length; xa++, xb++) {
             if (LINE_SEP[xa] != ba[xb]) {
                 return false;
             }

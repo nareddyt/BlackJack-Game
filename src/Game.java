@@ -85,8 +85,7 @@ public class Game implements ActionListener, KeyListener {
             ftf.setText(ftf.getText().replaceAll(",", ""));
 
             Graphics2D g2 = (Graphics2D) g.create();
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                    RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             int w = c.getWidth();
             int h = c.getHeight();
             int s = 8;
@@ -94,11 +93,9 @@ public class Game implements ActionListener, KeyListener {
             int x = w - pad - s;
             int y = (h - s) / 2;
 
-            if (!ftf.isEditValid() || ftf.getText().equals("")
-                    || ftf.getText() == null) {
+            if (!ftf.isEditValid() || ftf.getText().equals("") || ftf.getText() == null) {
                 if (ftf.getText().equals("") || ftf.getText() == null) {
-                    if (ftf.getFormatter().toString()
-                            .contains("NumberFormatter")) {
+                    if (ftf.getFormatter().toString().contains("NumberFormatter")) {
                         g2.setPaint(Color.red);
                     } else {
                         g2.setPaint(Color.orange);
@@ -106,8 +103,7 @@ public class Game implements ActionListener, KeyListener {
                 } else if (!ftf.isEditValid()) {
                     g2.setPaint(Color.red);
                 } else {
-                    throw new IllegalArgumentException(
-                            "Illegal Condition -- Contant Teju Nareddy...");
+                    throw new IllegalArgumentException("Illegal Condition -- Contant Teju Nareddy...");
                 }
             } else if (ftf.getName().equals("Decks")) {
                 try {
@@ -121,8 +117,7 @@ public class Game implements ActionListener, KeyListener {
                 }
             } else if (ftf.getName().equals("Players")) {
                 try {
-                    if (Integer.parseInt(ftf.getText()) < 2
-                            || Integer.parseInt(ftf.getText()) > 8) {
+                    if (Integer.parseInt(ftf.getText()) < 2 || Integer.parseInt(ftf.getText()) > 8) {
                         g2.setPaint(Color.orange);
                     } else {
                         correct = true;
@@ -132,8 +127,7 @@ public class Game implements ActionListener, KeyListener {
                 }
             } else if (ftf.getName().equals("Bet")) {
                 try {
-                    if (Double.parseDouble(ftf.getText()) < 20 || Double
-                            .parseDouble(ftf.getText()) > viewer.getMoney()) {
+                    if (Double.parseDouble(ftf.getText()) < 20 || Double.parseDouble(ftf.getText()) > viewer.getMoney()) {
                         g2.setPaint(Color.orange);
                     } else {
                         correct = true;
@@ -171,42 +165,40 @@ public class Game implements ActionListener, KeyListener {
                     // for the object.
     }
 
-    private final Dimension userScreen = java.awt.Toolkit.getDefaultToolkit()
-            .getScreenSize();
-    private final double STARTING_MONEY = 1500.00;
+    private JButton doubleDown = new JButton("Double Down");
+    private boolean endOfRound = false;
 
-    private final Random rand = new Random();
     private JFrame f;
-    private JFrame playerCards;
-    private JFrame otherCards;
+    private JButton getText = new JButton("OK"); // Make sure to change
+    // 5 choices in the game
+    private JButton hit = new JButton("Hit");
+    private boolean isWinner = false;
 
     private LayerUI<JFormattedTextField> layerUI = new ValidationLayerUI();
-    private PopupMenu popup = new PopupMenu();
-    private TrayIcon trayIcon = new TrayIcon(
-            Toolkit.getDefaultToolkit().getImage("src/cardImages/Suits.png"));
+    private int minutes = 0;
+    private JFrame otherCards;
 
-    private SystemTray tray = SystemTray.getSystemTray();
-    private JButton getText = new JButton("OK"); // Make sure to change
+    private JTextArea outputConsole = new JTextArea(20, 50);
+    private boolean paused = false;
+    private JFrame playerCards;
+    private ArrayList<Player> players;
+    private PopupMenu popup = new PopupMenu();
+
+    private final Random rand = new Random();
+    private int seconds = 0;
+    private JButton split = new JButton("Split");
+    private Stack stack;
+    private JButton stand = new JButton("Stand");
+    private final double STARTING_MONEY = 1500.00;
+
+    private JButton surrender = new JButton("Surrender");
     private JFormattedTextField textField1;
     private JFormattedTextField textField2;
     private JFormattedTextField textField3;
 
-    private JTextArea outputConsole = new JTextArea(20, 50);
-    // 5 choices in the game
-    private JButton hit = new JButton("Hit");
-    private JButton stand = new JButton("Stand");
-    private JButton doubleDown = new JButton("Double Down");
-    private JButton split = new JButton("Split");
-    private JButton surrender = new JButton("Surrender");
-
-    private boolean paused = false;
-    private boolean endOfRound = false;
-    private boolean isWinner = false;
-    private int seconds = 0;
-
-    private int minutes = 0;
-    private Stack stack;
-    private ArrayList<Player> players;
+    private SystemTray tray = SystemTray.getSystemTray();
+    private TrayIcon trayIcon = new TrayIcon(Toolkit.getDefaultToolkit().getImage("src/cardImages/Suits.png"));
+    private final Dimension userScreen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 
     private Player viewer;
 
@@ -222,29 +214,24 @@ public class Game implements ActionListener, KeyListener {
         f = new JFrame("Game Options");
         f.setLayout(new BorderLayout());
         f.setAlwaysOnTop(false);
-        f.add(new JLabel(
-                "Change the settings for the game here. Press bottom button when finished..."),
-                BorderLayout.NORTH);
+        f.add(new JLabel("Change the settings for the game here. Press bottom button when finished..."), BorderLayout.NORTH);
 
         getText = new JButton("Start Game");
         getText.addActionListener(this);
-        getText.setToolTipText(
-                "Fill out the above boxes and press this to start the game of BlackJack!");
+        getText.setToolTipText("Fill out the above boxes and press this to start the game of BlackJack!");
 
         JPanel fields = new JPanel(new GridLayout(3, 2)); // Now fields are used
                                                           // for the following
 
         textField1 = new JFormattedTextField(NumberFormat.getIntegerInstance());
         fields.add(new JLabel("Number of Decks"));
-        textField1
-                .setToolTipText("Each deck contains 52 cards with no Jokers.");
+        textField1.setToolTipText("Each deck contains 52 cards with no Jokers.");
         textField1.setName("Decks");
         fields.add(new JLayer<JFormattedTextField>(textField1, layerUI));
 
         textField2 = new JFormattedTextField(NumberFormat.getIntegerInstance());
         fields.add(new JLabel("Number of Players"));
-        textField2.setToolTipText(
-                "This number includes you, so if n is inputed, there are n-1 computers as players.");
+        textField2.setToolTipText("This number includes you, so if n is inputed, there are n-1 computers as players.");
         textField2.setName("Players");
         fields.add(new JLayer<JFormattedTextField>(textField2, layerUI));
 
@@ -283,10 +270,8 @@ public class Game implements ActionListener, KeyListener {
             MenuItem size = new MenuItem("Reset Size");
 
             /*
-             * CheckboxMenuItem cb2 = new CheckboxMenuItem("Set tooltip"); Menu
-             * displayMenu = new Menu("Display"); MenuItem errorItem = new
-             * MenuItem("Error"); MenuItem warningItem = new
-             * MenuItem("Warning");
+             * CheckboxMenuItem cb2 = new CheckboxMenuItem("Set tooltip"); Menu displayMenu = new Menu("Display"); MenuItem errorItem = new MenuItem("Error"); MenuItem warningItem
+             * = new MenuItem("Warning");
              *
              * MenuItem noneItem = new MenuItem("None");
              */
@@ -308,8 +293,7 @@ public class Game implements ActionListener, KeyListener {
             popup.addSeparator();
             popup.add(exitItem);
             /*
-             * popup.add(cb2); popup.addSeparator(); popup.add(displayMenu);
-             * displayMenu.add(errorItem); displayMenu.add(warningItem);
+             * popup.add(cb2); popup.addSeparator(); popup.add(displayMenu); displayMenu.add(errorItem); displayMenu.add(warningItem);
              *
              * displayMenu.add(noneItem);
              */
@@ -334,22 +318,14 @@ public class Game implements ActionListener, KeyListener {
         if (arg0.toString().contains("Exit")) {
             System.exit(1);
         } else if (arg0.toString().contains("About")) {
-            showMessageDialog(null,
-                    "BlackJack: Created by Teju Nareddy\nStarted in March, 2013\n"
-                            + "This is not the real version of BlackJack: See Info");
+            showMessageDialog(null, "BlackJack: Created by Teju Nareddy\nStarted in March, 2013\n" + "This is not the real version of BlackJack: See Info");
         } else if (arg0.toString().contains("Info")) {
             showMessageDialog(null,
-                    "This is a custom game of BlackJack geared toward one human and multiple computer players..."
-                            + "\nNo Dealer, so player is against everyone in the game"
-                            + "\nComputers make logical decisions based on their cards"
-                            + "\nSlight chance of showing your cards to others or seeing other's cards"
-                            + "\nEveryone has money and the computers bet around the same amount of money as you do");
+                    "This is a custom game of BlackJack geared toward one human and multiple computer players..." + "\nNo Dealer, so player is against everyone in the game" + "\nComputers make logical decisions based on their cards"
+                            + "\nSlight chance of showing your cards to others or seeing other's cards" + "\nEveryone has money and the computers bet around the same amount of money as you do");
         } else if (arg0.toString().contains("Help")) {
-            showMessageDialog(null,
-                    "When filling out text and number fields, three different images will be shown:"
-                            + "\nA red cross if the input is not in the correct format"
-                            + "\nA orange cross if the input is in the correct format but is probably not right (typing in nothing into a text field)"
-                            + "\nA green check if the input is correct");
+            showMessageDialog(null, "When filling out text and number fields, three different images will be shown:" + "\nA red cross if the input is not in the correct format"
+                    + "\nA orange cross if the input is in the correct format but is probably not right (typing in nothing into a text field)" + "\nA green check if the input is correct");
         } else if (arg0.toString().contains("Reset Size")) {
             f.pack();
             f.toFront();
@@ -381,14 +357,10 @@ public class Game implements ActionListener, KeyListener {
             f.dispose();
             double bet = Double.parseDouble(textField1.getText());
             if (bet < 20 && 20 < viewer.getMoney()) {
-                showMessageDialog(null,
-                        "The min bet is $20, but you typed in $" + bet);
+                showMessageDialog(null, "The min bet is $20, but you typed in $" + bet);
                 getPlayerBet();
             } else if (bet > viewer.getMoney()) {
-                showMessageDialog(null,
-                        "The most money you have is $" + viewer.getMoney()
-                                + ", but you typed in $" + bet
-                                + " as you bet.");
+                showMessageDialog(null, "The most money you have is $" + viewer.getMoney() + ", but you typed in $" + bet + " as you bet.");
                 getPlayerBet();
             } else {
                 viewer.setBet(bet);
@@ -406,10 +378,8 @@ public class Game implements ActionListener, KeyListener {
     {
         int[][] sum = new int[players.size()][2];
         for (int a = 0; a < players.size(); a++) {
-            for (int b = 0; b < BlackjackTools
-                    .getNumberOfHandsInPlayer(players.get(a)); b++) {
-                sum[a][b] = BlackjackTools.getSumOfCardsInHand(
-                        players.get(a).getHandList().get(b));
+            for (int b = 0; b < BlackjackTools.getNumberOfHandsInPlayer(players.get(a)); b++) {
+                sum[a][b] = BlackjackTools.getSumOfCardsInHand(players.get(a).getHandList().get(b));
             }
         }
 
@@ -417,10 +387,8 @@ public class Game implements ActionListener, KeyListener {
         Player bestPlayer = players.get(0);
 
         for (int a = 0; a < players.size(); a++) {
-            for (int b = 0; b < BlackjackTools
-                    .getNumberOfHandsInPlayer(players.get(a)); b++) {
-                int temp = BlackjackTools.getSumOfCardsInHand(
-                        players.get(a).getHandList().get(b));
+            for (int b = 0; b < BlackjackTools.getNumberOfHandsInPlayer(players.get(a)); b++) {
+                int temp = BlackjackTools.getSumOfCardsInHand(players.get(a).getHandList().get(b));
                 if (temp > bestSum) {
                     bestSum = temp;
                     bestPlayer = players.get(a);
@@ -438,13 +406,10 @@ public class Game implements ActionListener, KeyListener {
         ArrayList<JPanel> panels = new ArrayList<JPanel>();
 
         for (int j = 0; j < viewer.getHandList().size(); j++) {
-            for (int i = 0; i < viewer.getHandList().get(j).getCards()
-                    .size(); i++) {
-                ImageIcon image = new ImageIcon(viewer.getHandList().get(j)
-                        .getCards().get(i).getImage());
+            for (int i = 0; i < viewer.getHandList().get(j).getCards().size(); i++) {
+                ImageIcon image = new ImageIcon(viewer.getHandList().get(j).getCards().get(i).getImage());
                 JLabel l = new JLabel(image);
-                l.setToolTipText("Card #" + (i + 1) + " in hand #" + (j + 1)
-                        + " --> " + viewer.getName());
+                l.setToolTipText("Card #" + (i + 1) + " in hand #" + (j + 1) + " --> " + viewer.getName());
                 panels.add(new JPanel());
 
                 // TODO main player drops cards
@@ -467,8 +432,7 @@ public class Game implements ActionListener, KeyListener {
         playerCards.setVisible(true);
 
         panels = new ArrayList<JPanel>();
-        otherCards = new JFrame(
-                "Cards accidentally dropped by the computers...");
+        otherCards = new JFrame("Cards accidentally dropped by the computers...");
         otherCards.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         for (
@@ -497,8 +461,7 @@ public class Game implements ActionListener, KeyListener {
         if (panels.size() == 0)
 
         {
-            otherCards.add(
-                    new JLabel("No players have dropped any cards yet..."));
+            otherCards.add(new JLabel("No players have dropped any cards yet..."));
         }
         otherCards.pack();
         otherCards.setVisible(true);
@@ -564,17 +527,13 @@ public class Game implements ActionListener, KeyListener {
         f = new JFrame("Make Your Bet " + viewer.getName());
         f.setLayout(new BorderLayout());
         f.setAlwaysOnTop(false);
-        f.add(new JLabel(
-                "Change the settings for the game here. Press bottom button when finished..."),
-                BorderLayout.NORTH);
+        f.add(new JLabel("Change the settings for the game here. Press bottom button when finished..."), BorderLayout.NORTH);
 
         getText = new JButton("Make Bet");
         getText.addActionListener(this);
-        getText.setToolTipText(
-                "Press this to make your bet. Bet should be in a valid $ format.");
+        getText.setToolTipText("Press this to make your bet. Bet should be in a valid $ format.");
 
-        f.add(new JLabel("The minumium bet is $20, the max bet is $"
-                + viewer.getMoney() + " for you."), BorderLayout.NORTH);
+        f.add(new JLabel("The minumium bet is $20, the max bet is $" + viewer.getMoney() + " for you."), BorderLayout.NORTH);
         f.add(new JLabel("Your bet (in dollars) "), BorderLayout.WEST);
 
         NumberFormat format = NumberFormat.getNumberInstance();
@@ -584,8 +543,7 @@ public class Game implements ActionListener, KeyListener {
 
         textField1 = new JFormattedTextField(format);
         textField1.setName("Bet");
-        f.add(new JLayer<JFormattedTextField>(textField1, layerUI),
-                BorderLayout.CENTER);
+        f.add(new JLayer<JFormattedTextField>(textField1, layerUI), BorderLayout.CENTER);
 
         f.add(getText, BorderLayout.EAST);
         f.add(new JScrollPane(outputConsole), BorderLayout.SOUTH);

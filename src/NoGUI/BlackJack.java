@@ -17,10 +17,10 @@ import java.util.Scanner;
 
 public class BlackJack {
     public static Scanner console = new Scanner(System.in);
-    public static Random rand = new Random();
+    public static final int MIN_BET = 100;
 
     public static final int MONEY = 2500;
-    public static final int MIN_BET = 100;
+    public static Random rand = new Random();
 
     public static int checkCardAce(int card) {
         if (card == 1) {
@@ -43,9 +43,7 @@ public class BlackJack {
         } else if (cardNum == 1) {
             return 11;
         } else {
-            throw new IllegalArgumentException(
-                    "Number of the card must be between 1 and 13, not: "
-                            + cardNum);
+            throw new IllegalArgumentException("Number of the card must be between 1 and 13, not: " + cardNum);
         }
     }
 
@@ -77,8 +75,7 @@ public class BlackJack {
         return bet;
     }
 
-    public static String getComputerChoice(int total, int aces, int c1, int c2,
-            boolean first) {
+    public static String getComputerChoice(int total, int aces, int c1, int c2, boolean first) {
         String choice = "";
         int rand1 = rand.nextInt(3) - 1;
         int rand2 = rand.nextInt(4) + 1;
@@ -88,8 +85,7 @@ public class BlackJack {
         } else if (first && c1 == c2 && rand3 == 1) {
             choice = "split";
 
-            System.out.println(
-                    "The computer has choosen split, but will change to stand because split is not supported now...");
+            System.out.println("The computer has choosen split, but will change to stand because split is not supported now...");
             choice = "stand";
         } else if (total < 19) {
             if (rand2 == 3 && total >= 16) {
@@ -123,16 +119,14 @@ public class BlackJack {
                 while (!console.hasNextInt()) {
                     console.next(); // to discard the input
                     System.out.println("Not an integer! Try again.");
-                    System.out.print("Please enter in a number between $"
-                            + MIN_BET + " and $" + money + " (inclusive): $");
+                    System.out.print("Please enter in a number between $" + MIN_BET + " and $" + money + " (inclusive): $");
                 }
                 pBet = console.nextInt();
                 if (pBet < MIN_BET) {
                     greater = false;
                 }
             } else {
-                System.out.println(
-                        "You are going all in! You have less than or the same amount of money as the minimum Bet...");
+                System.out.println("You are going all in! You have less than or the same amount of money as the minimum Bet...");
                 pBet = money;
                 waitEnter(true);
             }
@@ -167,10 +161,8 @@ public class BlackJack {
                 return 4;
             } else if (choice.contains("spl") && card1 == card2) {
                 return 5;
-            } else if (choice.contains("quit") || choice.contains("terminate")
-                    || choice.contains("stop")) {
-                System.out.println(
-                        "\n\nYou have decided to quit! YOU LOSE!!!\n\n");
+            } else if (choice.contains("quit") || choice.contains("terminate") || choice.contains("stop")) {
+                System.out.println("\n\nYou have decided to quit! YOU LOSE!!!\n\n");
                 System.exit(1);
             } else {
                 again = false;
@@ -222,22 +214,18 @@ public class BlackJack {
             showCardPlayer(p2);
 
             // Check for BlackJack
-            if ((pTotal == 21 && (p1 == 11 || p2 == 11))
-                    || (cTotal == 21 && (c1 == 11 || c2 == 11))) {
+            if ((pTotal == 21 && (p1 == 11 || p2 == 11)) || (cTotal == 21 && (c1 == 11 || c2 == 11))) {
                 if (pTotal == 21 && cTotal == 21) {
-                    System.out.println(
-                            "Both you and the computer have a BlackJack...");
+                    System.out.println("Both you and the computer have a BlackJack...");
                     System.out.println("No money lost of gained...");
                 } else if (pTotal == 21) {
-                    System.out.println(
-                            "You have a BlackJack! You get 3/2 of your bet!!!");
+                    System.out.println("You have a BlackJack! You get 3/2 of your bet!!!");
                     pBet *= 3 / 2.0;
                 } else if (cTotal == 21) {
                     System.out.println("The computer has a BlackJack...");
                     cBet *= 3 / 2.0;
                 } else {
-                    throw new IllegalArgumentException(
-                            "\n\n\n\nWhoops... Program broke while checking for BlackJack (Ace + Jack)");
+                    throw new IllegalArgumentException("\n\n\n\nWhoops... Program broke while checking for BlackJack (Ace + Jack)");
                 }
             } else {
                 slipHandComputer(c1, c2);
@@ -253,8 +241,7 @@ public class BlackJack {
                 }
                 System.out.println("You total is now " + pTotal + ".\n");
                 System.out.println("You total is now " + pTotal + ".\n");
-                System.out.println(
-                        "The total value of your cards is " + pTotal + ".\n");
+                System.out.println("The total value of your cards is " + pTotal + ".\n");
                 choice = getPlayerChoice(p1, p2, first);
                 first = false;
 
@@ -265,8 +252,7 @@ public class BlackJack {
                         pBet = pMoney;
                         System.out.println("You are going all in!!!");
                     } else {
-                        System.out
-                                .println("You are betting $" + pBet + " now.");
+                        System.out.println("You are betting $" + pBet + " now.");
                     }
                     p1 = showCardPlayer(getCardRandom());
                     pTotal += getCardValue(p1);
@@ -294,16 +280,13 @@ public class BlackJack {
                     } else if (cChoice.equals("stand")) {
                         System.out.println("The computer decided to stand...");
                     } else if (cChoice.equals("double")) {
-                        System.out.println(
-                                "The computer had decided to double...");
+                        System.out.println("The computer had decided to double...");
                         cBet *= (3 / 2.0);
                         if (cBet >= cMoney) {
-                            System.out.println(
-                                    "The computer is now going all in!");
+                            System.out.println("The computer is now going all in!");
                             cBet = cMoney;
                         } else {
-                            System.out.println(
-                                    "The computer is now betting $" + cBet);
+                            System.out.println("The computer is now betting $" + cBet);
                         }
                         // Normal hit now
                         c1 = getCardRandom();
@@ -322,8 +305,7 @@ public class BlackJack {
                         cChoice = "hit"; // temp case
                         // TODO add split logic
                     } else {
-                        throw new IllegalArgumentException(
-                                "The choice is: " + cChoice);
+                        throw new IllegalArgumentException("The choice is: " + cChoice);
                     }
 
                 }
@@ -339,16 +321,13 @@ public class BlackJack {
                                 pTotal -= 10;
                             }
 
-                            System.out.println(
-                                    "You total is now " + pTotal + ".\n");
+                            System.out.println("You total is now " + pTotal + ".\n");
 
-                            cChoice = getComputerChoice(cTotal, cAce, c1, c2,
-                                    cFirst);
+                            cChoice = getComputerChoice(cTotal, cAce, c1, c2, cFirst);
                             cFirst = false;
 
                             if (cChoice.equals("hit")) {
-                                System.out.println(
-                                        "The computer decided to hit.");
+                                System.out.println("The computer decided to hit.");
                                 c1 = getCardRandom();
                                 cTotal += getCardValue(c1);
                                 cAce += checkCardAce(c1);
@@ -359,20 +338,15 @@ public class BlackJack {
                                 }
                                 slipHandComputer(c1, c1);
                             } else if (cChoice.equals("stand")) {
-                                System.out.println(
-                                        "The computer decided to stand...");
+                                System.out.println("The computer decided to stand...");
                             } else if (cChoice.equals("double")) {
-                                System.out.println(
-                                        "The computer had decided to double...");
+                                System.out.println("The computer had decided to double...");
                                 cBet *= (3 / 2.0);
                                 if (cBet >= cMoney) {
-                                    System.out.println(
-                                            "The computer is now going all in!");
+                                    System.out.println("The computer is now going all in!");
                                     cBet = cMoney;
                                 } else {
-                                    System.out.println(
-                                            "The computer is now betting $"
-                                                    + cBet);
+                                    System.out.println("The computer is now betting $" + cBet);
                                 }
                                 // Normal hit now
                                 c1 = getCardRandom();
@@ -391,8 +365,7 @@ public class BlackJack {
                                 cChoice = "hit"; // temp case
                                 // TODO add split logic
                             } else {
-                                throw new IllegalArgumentException(
-                                        "The choice is: " + cChoice);
+                                throw new IllegalArgumentException("The choice is: " + cChoice);
                             }
 
                             if (pTotal <= 21 && cTotal <= 21) {
@@ -400,16 +373,12 @@ public class BlackJack {
                             }
                         } else if (choice == 2) // stand
                         {
-                            while (!cChoice.equals("stand")
-                                    && !cChoice.equals("surrender")
-                                    && cTotal <= 21) {
-                                cChoice = getComputerChoice(cTotal, cAce, c1,
-                                        c2, cFirst);
+                            while (!cChoice.equals("stand") && !cChoice.equals("surrender") && cTotal <= 21) {
+                                cChoice = getComputerChoice(cTotal, cAce, c1, c2, cFirst);
                                 cFirst = false;
 
                                 if (cChoice.equals("hit")) {
-                                    System.out.println(
-                                            "The computer decided to hit.");
+                                    System.out.println("The computer decided to hit.");
                                     c1 = getCardRandom();
                                     cTotal += getCardValue(c1);
                                     cAce += checkCardAce(c1);
@@ -420,20 +389,15 @@ public class BlackJack {
                                     }
                                     slipHandComputer(c1, c1);
                                 } else if (cChoice.equals("stand")) {
-                                    System.out.println(
-                                            "The computer decided to stand...");
+                                    System.out.println("The computer decided to stand...");
                                 } else if (cChoice.equals("double")) {
-                                    System.out.println(
-                                            "The computer had decided to double...");
+                                    System.out.println("The computer had decided to double...");
                                     cBet *= (3 / 2.0);
                                     if (cBet >= cMoney) {
-                                        System.out.println(
-                                                "The computer is now going all in!");
+                                        System.out.println("The computer is now going all in!");
                                         cBet = cMoney;
                                     } else {
-                                        System.out.println(
-                                                "The computer is now betting $"
-                                                        + cBet);
+                                        System.out.println("The computer is now betting $" + cBet);
                                     }
                                     // Normal hit now
                                     c1 = getCardRandom();
@@ -447,14 +411,12 @@ public class BlackJack {
                                     slipHandComputer(c1, c1);
                                 } else if (cChoice.equals("surrender")) {
                                     cSurrender = true;
-                                    System.out.println(
-                                            "The computer surrendered!");
+                                    System.out.println("The computer surrendered!");
                                 } else if (cChoice.equals("split")) {
                                     cChoice = "hit"; // temp case
                                     // TODO add split logic
                                 } else {
-                                    throw new IllegalArgumentException(
-                                            "The choice is: " + cChoice);
+                                    throw new IllegalArgumentException("The choice is: " + cChoice);
                                 }
                                 // TODO --------------------- finish + TEST
                                 // computer play
@@ -464,8 +426,7 @@ public class BlackJack {
                                 cFirst = false;
 
                                 if (cChoice.equals("hit")) {
-                                    System.out.println(
-                                            "The computer decided to hit.");
+                                    System.out.println("The computer decided to hit.");
                                     c1 = getCardRandom();
                                     cTotal += getCardValue(c1);
                                     cAce += checkCardAce(c1);
@@ -476,20 +437,15 @@ public class BlackJack {
                                     }
                                     slipHandComputer(c1, c1);
                                 } else if (cChoice.equals("stand")) {
-                                    System.out.println(
-                                            "The computer decided to stand...");
+                                    System.out.println("The computer decided to stand...");
                                 } else if (cChoice.equals("double")) {
-                                    System.out.println(
-                                            "The computer had decided to double...");
+                                    System.out.println("The computer had decided to double...");
                                     cBet *= (3 / 2.0);
                                     if (cBet >= cMoney) {
-                                        System.out.println(
-                                                "The computer is now going all in!");
+                                        System.out.println("The computer is now going all in!");
                                         cBet = cMoney;
                                     } else {
-                                        System.out.println(
-                                                "The computer is now betting $"
-                                                        + cBet);
+                                        System.out.println("The computer is now betting $" + cBet);
                                     }
                                     // Normal hit now
                                     c1 = getCardRandom();
@@ -503,14 +459,12 @@ public class BlackJack {
                                     slipHandComputer(c1, c1);
                                 } else if (cChoice.equals("surrender")) {
                                     cSurrender = true;
-                                    System.out.println(
-                                            "The computer surrendered!");
+                                    System.out.println("The computer surrendered!");
                                 } else if (cChoice.equals("split")) {
                                     cChoice = "hit"; // temp case
                                     // TODO add split logic
                                 } else {
-                                    throw new IllegalArgumentException(
-                                            "The choice is: " + cChoice);
+                                    throw new IllegalArgumentException("The choice is: " + cChoice);
                                 }
                             }
                         }
@@ -519,13 +473,9 @@ public class BlackJack {
                 {
                     // Let computer play until it stands, surrenders, or
                     // loses...
-                    System.out.println(
-                            "\nThe computer will now decide what to do.");
-                    while (!cChoice.equals("stand")
-                            && !cChoice.equals("surrender")
-                            && !cChoice.equals("double") && cTotal <= 21) {
-                        cChoice = getComputerChoice(cTotal, cAce, c1, c2,
-                                cFirst);
+                    System.out.println("\nThe computer will now decide what to do.");
+                    while (!cChoice.equals("stand") && !cChoice.equals("surrender") && !cChoice.equals("double") && cTotal <= 21) {
+                        cChoice = getComputerChoice(cTotal, cAce, c1, c2, cFirst);
                         cFirst = false;
 
                         if (cChoice.equals("hit")) {
@@ -540,19 +490,15 @@ public class BlackJack {
                             }
                             slipHandComputer(c1, c1);
                         } else if (cChoice.equals("stand")) {
-                            System.out.println(
-                                    "The computer decided to stand...");
+                            System.out.println("The computer decided to stand...");
                         } else if (cChoice.equals("double")) {
-                            System.out.println(
-                                    "The computer had decided to double...");
+                            System.out.println("The computer had decided to double...");
                             cBet *= (3 / 2.0);
                             if (cBet >= cMoney) {
-                                System.out.println(
-                                        "The computer is now going all in!");
+                                System.out.println("The computer is now going all in!");
                                 cBet = cMoney;
                             } else {
-                                System.out.println(
-                                        "The computer is now betting $" + cBet);
+                                System.out.println("The computer is now betting $" + cBet);
                             }
                             // Normal hit now
                             c1 = getCardRandom();
@@ -571,8 +517,7 @@ public class BlackJack {
                             cChoice = "hit"; // temp case
                             // TODO add split logic
                         } else {
-                            throw new IllegalArgumentException(
-                                    "The choice is: " + cChoice);
+                            throw new IllegalArgumentException("The choice is: " + cChoice);
                         }
                     }
                 } else if (choice == 3) // Surrender
@@ -603,15 +548,12 @@ public class BlackJack {
                                 pTotal2 -= 10;
                             }
 
-                            System.out.println("Your hand totals are now: "
-                                    + pTotal1 + " and " + pTotal2);
-                            cChoice = getComputerChoice(cTotal, cAce, c1, c2,
-                                    cFirst);
+                            System.out.println("Your hand totals are now: " + pTotal1 + " and " + pTotal2);
+                            cChoice = getComputerChoice(cTotal, cAce, c1, c2, cFirst);
                             first = false;
 
                             if (cChoice.equals("hit")) {
-                                System.out.println(
-                                        "The computer decided to hit.");
+                                System.out.println("The computer decided to hit.");
                                 c1 = getCardRandom();
                                 cTotal += getCardValue(c1);
                                 cAce += checkCardAce(c1);
@@ -622,20 +564,15 @@ public class BlackJack {
                                 }
                                 slipHandComputer(c1, c1);
                             } else if (cChoice.equals("stand")) {
-                                System.out.println(
-                                        "The computer decided to stand...");
+                                System.out.println("The computer decided to stand...");
                             } else if (cChoice.equals("double")) {
-                                System.out.println(
-                                        "The computer had decided to double...");
+                                System.out.println("The computer had decided to double...");
                                 cBet *= (3 / 2.0);
                                 if (cBet >= cMoney) {
-                                    System.out.println(
-                                            "The computer is now going all in!");
+                                    System.out.println("The computer is now going all in!");
                                     cBet = cMoney;
                                 } else {
-                                    System.out.println(
-                                            "The computer is now betting $"
-                                                    + cBet);
+                                    System.out.println("The computer is now betting $" + cBet);
                                 }
                                 // Normal hit now
                                 c1 = getCardRandom();
@@ -654,8 +591,7 @@ public class BlackJack {
                                 cChoice = "hit"; // temp case
                                 // TODO add split logic
                             } else {
-                                throw new IllegalArgumentException(
-                                        "The choice is: " + cChoice);
+                                throw new IllegalArgumentException("The choice is: " + cChoice);
                             }
                             // TODO --------------------- finish + TEST computer
                             // play ----------------------------
@@ -666,11 +602,8 @@ public class BlackJack {
                             pSurrender = true;
                         }
                         if (choice == 2) {
-                            while (!cChoice.equals("stand")
-                                    && !cChoice.equals("surrender")
-                                    && cTotal <= 21) {
-                                cChoice = getComputerChoice(cTotal, cAce, c1,
-                                        c2, cFirst);
+                            while (!cChoice.equals("stand") && !cChoice.equals("surrender") && cTotal <= 21) {
+                                cChoice = getComputerChoice(cTotal, cAce, c1, c2, cFirst);
                                 // TODO add computer play
                             }
                         }
@@ -688,60 +621,45 @@ public class BlackJack {
                     pMoney -= pBet;
                     cMoney += cBet;
                     System.out.println("\nYour card total is above 21...");
-                    System.out.println(
-                            "The computer won against you... You lost $" + pBet
-                                    + ".");
+                    System.out.println("The computer won against you... You lost $" + pBet + ".");
                     System.out.println("Now you have $" + pMoney + ".");
                     System.out.println("The computer now has $" + cMoney + ".");
                 } else if (cTotal > 21) {
                     pMoney += pBet;
                     cMoney -= cBet;
-                    System.out.println(
-                            "\nThe computer's card total is above 21...");
-                    System.out
-                            .println("The computer lost against you! You won $"
-                                    + pBet + ".");
+                    System.out.println("\nThe computer's card total is above 21...");
+                    System.out.println("The computer lost against you! You won $" + pBet + ".");
                     System.out.println("Now you have $" + pMoney + ".");
                     System.out.println("The computer now has $" + cMoney + ".");
                 } else if (cTotal > pTotal) {
                     pMoney -= pBet;
                     cMoney += cBet;
-                    System.out.println(
-                            "\nThe computer has a card total greater than yours but less than 22...");
-                    System.out.println(
-                            "The computer won against you... You lost $" + pBet
-                                    + ".");
+                    System.out.println("\nThe computer has a card total greater than yours but less than 22...");
+                    System.out.println("The computer won against you... You lost $" + pBet + ".");
                     System.out.println("Now you have $" + pMoney + ".");
                     System.out.println("The computer now has $" + cMoney + ".");
                 } else if (pTotal > cTotal) {
                     pMoney += pBet;
                     cMoney -= cBet;
-                    System.out.println(
-                            "\nYour card total is greater than the computer's and less than 22!");
-                    System.out
-                            .println("The computer lost against you! You won $"
-                                    + pBet + ".");
+                    System.out.println("\nYour card total is greater than the computer's and less than 22!");
+                    System.out.println("The computer lost against you! You won $" + pBet + ".");
                     System.out.println("Now you have $" + pMoney + ".");
                     System.out.println("The computer now has $" + cMoney + ".");
                 } else {
-                    System.out.println(
-                            "\nTie game, no money lost or gained......");
+                    System.out.println("\nTie game, no money lost or gained......");
                 }
             } else {
                 if (pSurrender) {
                     pMoney -= (1 / 2.0) * pBet;
                     cMoney += cBet;
-                    System.out.println("\nYou surrendered... You lost $"
-                            + pBet * (1 / 2.0) + ".");
-                    System.out.println("However, you did not lose $" + pBet
-                            + " because you surrendered....");
+                    System.out.println("\nYou surrendered... You lost $" + pBet * (1 / 2.0) + ".");
+                    System.out.println("However, you did not lose $" + pBet + " because you surrendered....");
                     System.out.println("Now you have $" + pMoney + ".");
                     System.out.println("The computer now has $" + cMoney + ".");
                 } else {
                     pMoney += pBet;
                     cMoney -= (1 / 2.0) * cBet;
-                    System.out.println("\nThe computer surrendered!!! You got $"
-                            + pBet + ".");
+                    System.out.println("\nThe computer surrendered!!! You got $" + pBet + ".");
                     System.out.println("Now you have $" + pMoney + ".");
                     System.out.println("The computer now has $" + cMoney + ".");
                 }
@@ -800,9 +718,7 @@ public class BlackJack {
                 System.out.println("You got a King.");
                 break;
             default:
-                throw new IllegalArgumentException(
-                        "Number of the card must be Between 1 and 13, not: "
-                                + cardNum);
+                throw new IllegalArgumentException("Number of the card must be Between 1 and 13, not: " + cardNum);
         }
         return cardNum;
     }
@@ -822,19 +738,15 @@ public class BlackJack {
         int number = rand.nextInt(19) + 1;
         int card;
         int choice;
-        if ((random == number || random == 2 * number || random == number / 2)
-                && (random != number - 1 || random != number + 1)) {
+        if ((random == number || random == 2 * number || random == number / 2) && (random != number - 1 || random != number + 1)) {
             card = rand.nextInt(2) + 1;
             choice = rand.nextInt(3) + 1;
             if (choice == 1) {
-                System.out.print(
-                        "The computer accidently showed you that one of its card is a ");
+                System.out.print("The computer accidently showed you that one of its card is a ");
             } else if (choice == 2) {
-                System.out.print(
-                        "The computer dropped one of its cards! It is a ");
+                System.out.print("The computer dropped one of its cards! It is a ");
             } else {
-                System.out.print(
-                        "As the computer was drawing a card, you saw that it took a ");
+                System.out.print("As the computer was drawing a card, you saw that it took a ");
             }
             if (card == 1) {
                 switch (cardNum2) {
@@ -878,9 +790,7 @@ public class BlackJack {
                         System.out.print("King");
                         break;
                     default:
-                        throw new IllegalArgumentException(
-                                "Number of the card must be Between 1 and 13, not: "
-                                        + cardNum2);
+                        throw new IllegalArgumentException("Number of the card must be Between 1 and 13, not: " + cardNum2);
                 }
             } else {
                 switch (cardNum1) {
@@ -924,9 +834,7 @@ public class BlackJack {
                         System.out.print("King");
                         break;
                     default:
-                        throw new IllegalArgumentException(
-                                "Number of the card must be Between 1 and 13, not: "
-                                        + cardNum2);
+                        throw new IllegalArgumentException("Number of the card must be Between 1 and 13, not: " + cardNum2);
                 }
             }
             System.out.println("...");

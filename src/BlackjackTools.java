@@ -3,6 +3,12 @@ import java.util.ArrayList;
 // Teju Nareddy, 8/24/13
 
 public class BlackjackTools {
+    /**
+     * Returns the highest card in a hand
+     *
+     * @param h
+     * @return
+     */
     public static Card getHighestCard(Hand h) {
         int high = 0;
         Card highest = null;
@@ -17,6 +23,12 @@ public class BlackjackTools {
         return highest;
     }
 
+    /**
+     * Returns the highest hand
+     *
+     * @param hands
+     * @return
+     */
     public static Hand getHighestHand(ArrayList<Hand> hands) {
         int high = 0;
         Hand highest = null;
@@ -30,6 +42,12 @@ public class BlackjackTools {
         return highest;
     }
 
+    /**
+     * Returns the player with the highest hand
+     *
+     * @param players
+     * @return
+     */
     public static Player getHighestPlayer(ArrayList<Player> players) {
         int high = 0;
         Player highest = null;
@@ -44,6 +62,12 @@ public class BlackjackTools {
         return highest;
     }
 
+    /**
+     * Returns the number of aces in a hand
+     *
+     * @param hand
+     * @return
+     */
     public static int getNumberOfAcesInHand(Hand hand) {
         int aces = 0;
         ArrayList<Card> cards = hand.getCards();
@@ -55,10 +79,22 @@ public class BlackjackTools {
         return aces;
     }
 
+    /**
+     * Returns the number of cards in a hand
+     *
+     * @param h
+     * @return
+     */
     public static int getNumberOfCardsInHand(Hand h) {
         return h.getCards().size();
     }
 
+    /**
+     * Returns the number of cards a player has
+     *
+     * @param p
+     * @return
+     */
     public static int getNumberOfCardsInPlayer(Player p) {
         int cards = 0;
 
@@ -68,10 +104,22 @@ public class BlackjackTools {
         return cards;
     }
 
+    /**
+     * Returns the number of hands a player has
+     *
+     * @param p
+     * @return
+     */
     public static int getNumberOfHandsInPlayer(Player p) {
         return p.getHandList().size();
     }
 
+    /**
+     * Returns the sum of all the cards in a hand. Takes into consideration aces
+     *
+     * @param hand
+     * @return
+     */
     public static int getSumOfCardsInHand(Hand hand) {
         ArrayList<Card> cards = hand.getCards();
         if (cards == null || cards.size() == 0) {
@@ -92,17 +140,28 @@ public class BlackjackTools {
         return total;
     }
 
+    /**
+     * Determines if the player has split his Hand into two
+     *
+     * @param p
+     * @return
+     */
     public static boolean hasSplit(Player p) {
         if (p.getHandList().size() == 1) {
             return false;
         } else if (p.getHandList().size() == 2) {
             return true;
         } else {
-            throw new IllegalArgumentException("Player " + p.toString()
-                    + " has " + p.getHandList().size() + " hands!");
+            throw new IllegalArgumentException("Player " + p.toString() + " has " + p.getHandList().size() + " hands!");
         }
     }
 
+    /**
+     * Determines if a hand is a BlackJack combination
+     *
+     * @param h
+     * @return
+     */
     public static boolean isBlackJack(Hand h) {
         ArrayList<Card> cards = h.getCards();
         if (cards.size() == 2 && getSumOfCardsInHand(h) == 21) {
@@ -111,6 +170,12 @@ public class BlackjackTools {
         return false;
     }
 
+    /**
+     * Determines whether the player is still in the game (Has at least one hand <= 21)
+     *
+     * @param p
+     * @return
+     */
     public static boolean isIn(Player p) {
         if (getHighestHand(p.getHandList()) == null) {
             return false;
