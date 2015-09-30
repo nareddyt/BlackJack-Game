@@ -56,12 +56,20 @@ public class Card implements Comparable<Card> {
      *            The card to check this with
      * @return True: Number, color, and suit match False: Any of these do not match
      */
-    public boolean equals(Card c) {
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Card)) {
+            return false;
+        }
+
+        Card c = (Card) obj;
         if (getRepresentation() == c.getRepresentation() && getSuit() == c.getSuit()) {
             return true;
         }
         return false;
     }
+
+    // TODO implement hashCode()
 
     /**
      * Returns the color of the card
