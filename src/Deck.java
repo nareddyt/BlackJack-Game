@@ -15,6 +15,9 @@ public class Deck {
     private Random rand = new Random();
     private int spot = 0;
 
+    /**
+     * Creates a new standard Deck of 52 cards. Cards are not shuffled!
+     */
     public Deck() {
         cards = new Card[52];
         int index = -1;

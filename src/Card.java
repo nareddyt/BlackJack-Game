@@ -49,13 +49,6 @@ public class Card implements Comparable<Card> {
         }
     }
 
-    /**
-     * Returns whether the current instantiated card is equal to the explicit card.
-     *
-     * @param c
-     *            The card to check this with
-     * @return True: Number, color, and suit match False: Any of these do not match
-     */
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof Card)) {
@@ -69,12 +62,10 @@ public class Card implements Comparable<Card> {
         return false;
     }
 
-    // TODO implement hashCode()
-
     /**
      * Returns the color of the card
      *
-     * @return
+     * @return Color
      */
     public Color getColor() {
         if (suit.equals(Suit.Club) || suit.equals(Suit.Spade)) {
@@ -86,7 +77,7 @@ public class Card implements Comparable<Card> {
     /**
      * Returns the card's image
      *
-     * @return
+     * @return Image
      */
     public Image getImage() {
         return img;
@@ -144,6 +135,11 @@ public class Card implements Comparable<Card> {
      */
     public Suit getSuit() {
         return suit;
+    }
+
+    @Override
+    public int hashCode() {
+        return suit.hashCode() + representation;
     }
 
     /**

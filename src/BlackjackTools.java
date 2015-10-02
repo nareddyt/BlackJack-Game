@@ -43,7 +43,7 @@ public class BlackjackTools {
     }
 
     /**
-     * Returns the player with the highest hand
+     * Returns the player with the highest hand (not including players that are out)
      *
      * @param players
      * @return
@@ -157,7 +157,7 @@ public class BlackjackTools {
     }
 
     /**
-     * Determines if a hand is a BlackJack combination
+     * Determines if a hand is a BlackJack combination (not a true BlackJack)
      *
      * @param h
      * @return
