@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 // Teju Nareddy, 8/24/13
 
-public class BlackjackTools {
+public class BlackJackTools {
     /**
      * Returns the highest card in a hand
      *
@@ -40,6 +40,18 @@ public class BlackjackTools {
             }
         }
         return highest;
+    }
+
+    public static int getHighestNumberOfCardsInHand(Player p) {
+        int high = 0;
+        for (Hand h : p.getHandList()) {
+            int temp = getNumberOfCardsInHand(h);
+            if (temp > high) {
+                high = temp;
+            }
+        }
+
+        return high;
     }
 
     /**

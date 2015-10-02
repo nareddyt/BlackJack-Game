@@ -102,7 +102,7 @@ public class Player {
      * @return boolean
      */
     public boolean hasCards() {
-        return BlackjackTools.getNumberOfCardsInPlayer(this) > 0;
+        return BlackJackTools.getNumberOfCardsInPlayer(this) > 0;
     }
 
     @Override

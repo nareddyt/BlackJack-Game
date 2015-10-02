@@ -168,10 +168,9 @@ public class Game implements ActionListener, KeyListener {
     private PrintStream outputFile;
 
     private boolean endOfRound = false;
-    private boolean isWinner = false;
-    private boolean paused = false;
 
     private ArrayList<Player> players;
+    private Player viewer;
     private Stack stack;
 
     private JFrame f;
@@ -184,7 +183,7 @@ public class Game implements ActionListener, KeyListener {
     private JButton stand = new JButton("Stand");
     private JButton surrender = new JButton("Surrender");
 
-    private JButton getText = new JButton("OK"); // Make sure to change
+    private JButton actionButton = new JButton("OK"); // Make sure to change
 
     private JTextArea outputConsole = new JTextArea(20, 50);
 
@@ -197,66 +196,14 @@ public class Game implements ActionListener, KeyListener {
     private TrayIcon trayIcon = new TrayIcon(Toolkit.getDefaultToolkit().getImage("src/cardImages/Suits.png"));
     private final Dimension userScreen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 
-    private Player viewer;
-
     public Game() // The "main" method
     {
         TextAreaOutputStream taos = new TextAreaOutputStream(outputConsole, 60);
-        PrintStream ps = new PrintStream(taos);
         // TODO
         // 2 lines below set console in the JFrame
+        // PrintStream ps = new PrintStream(taos);
         // System.setErr(ps);
         // System.setOut(ps);
-
-        f = new JFrame("Game Options");
-        f.setLayout(new BorderLayout());
-        f.setAlwaysOnTop(false);
-        f.add(new JLabel("Change the settings for the game here. Press bottom button when finished..."), BorderLayout.NORTH);
-
-        getText = new JButton("Start Game");
-        getText.addActionListener(this);
-        getText.setToolTipText("Fill out the above boxes and press this to start the game of BlackJack!");
-
-        JPanel fields = new JPanel(new GridLayout(3, 2)); // Now fields are used
-                                                          // for the following
-
-        textField1 = new JFormattedTextField(NumberFormat.getIntegerInstance());
-        fields.add(new JLabel("Number of Decks"));
-        textField1.setToolTipText("Each deck contains 52 cards with no Jokers.");
-        textField1.setName("Decks");
-        fields.add(new JLayer<JFormattedTextField>(textField1, layerUI));
-
-        textField2 = new JFormattedTextField(NumberFormat.getIntegerInstance());
-        fields.add(new JLabel("Number of Players"));
-        textField2.setToolTipText("This number includes you, so if n is inputed, there are n-1 computers as players.");
-        textField2.setName("Players");
-        fields.add(new JLayer<JFormattedTextField>(textField2, layerUI));
-
-        textField3 = new JFormattedTextField();
-        fields.add(new JLabel("Your Name"));
-        textField3.setToolTipText("Just for display purposes ;)");
-        textField3.setName("Name");
-        textField3.setValue("");
-        fields.add(new JLayer<JFormattedTextField>(textField3, layerUI));
-
-        JPanel options = new JPanel(new BorderLayout());
-        options.add(fields, BorderLayout.CENTER);
-        options.add(getText, BorderLayout.SOUTH);
-
-        f.add(options, BorderLayout.CENTER);
-        f.add(new JScrollPane(outputConsole), BorderLayout.SOUTH); // don't
-                                                                   // forget
-                                                                   // JScrollPane()
-        f.pack();
-        f.setVisible(true);
-
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e1) {
-            e1.printStackTrace();
-        }
-
-        f.toFront();
 
         if (SystemTray.isSupported()) {
             // Create a pop-up menu components
@@ -306,7 +253,7 @@ public class Game implements ActionListener, KeyListener {
             }
         }
 
-        // Go to action performed method now --> "Start Game"
+        setupGame();
     }
 
     @Override
@@ -331,20 +278,20 @@ public class Game implements ActionListener, KeyListener {
             System.out.println("You will now begin a game of BlackJack!");
             int numOfDecks = Integer.parseInt(textField1.getText());
             stack = new Stack(numOfDecks);
+            stack.shuffle(8);
 
-            ArrayList<Player> plays = new ArrayList<Player>();
+            players = new ArrayList<Player>();
             int num = Integer.parseInt(textField2.getText());
             String name = textField3.getText();
 
             for (int i = 0; i < num - 1; i++) {
-                plays.add(new Player("Computer " + (i + 1), true));
+                players.add(new Player("Computer " + (i + 1), true));
             }
-            plays.add(new Player(name, false));
-            for (Player p : plays) {
+            players.add(new Player(name, false));
+            for (Player p : players) {
                 p.setMoney(STARTING_MONEY);
             }
 
-            players = plays;
             viewer = players.get(players.size() - 1);
 
             stack.shuffle(5);
@@ -353,6 +300,8 @@ public class Game implements ActionListener, KeyListener {
         } else if (arg0.toString().contains("Make Bet")) {
             f.dispose();
             double bet = Double.parseDouble(textField1.getText());
+
+            // TODO Error handling here or in Player?
             if (bet < 20 && 20 < viewer.getMoney()) {
                 showMessageDialog(null, "The min bet is $20, but you typed in $" + bet);
                 getPlayerBet();
@@ -365,7 +314,7 @@ public class Game implements ActionListener, KeyListener {
 
                 distributeCards();
                 displayCards();
-                getChoice(); // TODO
+                getChoice();
             }
         }
     }
@@ -375,8 +324,8 @@ public class Game implements ActionListener, KeyListener {
     {
         int[][] sum = new int[players.size()][2];
         for (int a = 0; a < players.size(); a++) {
-            for (int b = 0; b < BlackjackTools.getNumberOfHandsInPlayer(players.get(a)); b++) {
-                sum[a][b] = BlackjackTools.getSumOfCardsInHand(players.get(a).getHandList().get(b));
+            for (int b = 0; b < BlackJackTools.getNumberOfHandsInPlayer(players.get(a)); b++) {
+                sum[a][b] = BlackJackTools.getSumOfCardsInHand(players.get(a).getHandList().get(b));
             }
         }
 
@@ -384,8 +333,8 @@ public class Game implements ActionListener, KeyListener {
         Player bestPlayer = players.get(0);
 
         for (int a = 0; a < players.size(); a++) {
-            for (int b = 0; b < BlackjackTools.getNumberOfHandsInPlayer(players.get(a)); b++) {
-                int temp = BlackjackTools.getSumOfCardsInHand(players.get(a).getHandList().get(b));
+            for (int b = 0; b < BlackJackTools.getNumberOfHandsInPlayer(players.get(a)); b++) {
+                int temp = BlackJackTools.getSumOfCardsInHand(players.get(a).getHandList().get(b));
                 if (temp > bestSum) {
                     bestSum = temp;
                     bestPlayer = players.get(a);
@@ -416,13 +365,9 @@ public class Game implements ActionListener, KeyListener {
 
         }
 
-        // FIXME
-        playerCards.setLayout(new GridLayout(1, 2));
-        for (
-
-        int i = 0; i < panels.size(); i++)
-
-        {
+        // FIXME change gridlayout value
+        playerCards.setLayout(new GridLayout(BlackJackTools.getNumberOfHandsInPlayer(viewer), BlackJackTools.getHighestNumberOfCardsInHand(viewer)));
+        for (int i = 0; i < panels.size(); i++) {
             playerCards.add(panels.get(i));
         }
         playerCards.pack();
@@ -466,14 +411,12 @@ public class Game implements ActionListener, KeyListener {
     }
 
     public void distributeCards() {
-
         for (Player p : players) {
             p.getHandList().add(new Hand());
             p.getHandList().get(0).getCards().add(stack.getCard());
             p.getHandList().get(0).getCards().add(stack.getCard());
             p.setDropped();
         }
-
     }
 
     // TODO
@@ -523,12 +466,12 @@ public class Game implements ActionListener, KeyListener {
     public void getPlayerBet() {
         f = new JFrame("Make Your Bet " + viewer.getName());
         f.setLayout(new BorderLayout());
-        f.setAlwaysOnTop(false);
+        f.setAlwaysOnTop(true);
         f.add(new JLabel("Change the settings for the game here. Press bottom button when finished..."), BorderLayout.NORTH);
 
-        getText = new JButton("Make Bet");
-        getText.addActionListener(this);
-        getText.setToolTipText("Press this to make your bet. Bet should be in a valid $ format.");
+        actionButton = new JButton("Make Bet");
+        actionButton.addActionListener(this);
+        actionButton.setToolTipText("Press this to make your bet. Bet should be in a valid $ format.");
 
         f.add(new JLabel("The minumium bet is $20, the max bet is $" + viewer.getMoney() + " for you."), BorderLayout.NORTH);
         f.add(new JLabel("Your bet (in dollars) "), BorderLayout.WEST);
@@ -542,18 +485,13 @@ public class Game implements ActionListener, KeyListener {
         textField1.setName("Bet");
         f.add(new JLayer<JFormattedTextField>(textField1, layerUI), BorderLayout.CENTER);
 
-        f.add(getText, BorderLayout.EAST);
+        f.add(actionButton, BorderLayout.EAST);
         f.add(new JScrollPane(outputConsole), BorderLayout.SOUTH);
 
         f.pack();
         f.setVisible(true);
 
-        // go to action performed method now --> "Get Other Bets, Start round of
-        // cards"
-    }
-
-    public boolean isPaused() {
-        return paused;
+        // go to action performed method now --> "Get Other Bets, Start round of cards"
     }
 
     @Override
@@ -569,13 +507,53 @@ public class Game implements ActionListener, KeyListener {
 
     @Override
     public void keyTyped(KeyEvent arg0) {
-        if (arg0.getKeyChar() == 'p' || arg0.getKeyChar() == 'P') {
-            System.out.println("Toggle-Pause");
-            if (paused) {
-                paused = false;
-            } else {
-                paused = true;
-            }
-        }
+        // TODO
+    }
+
+    public void setupGame() {
+        f = new JFrame("Game Options");
+        f.setLayout(new BorderLayout());
+        f.setAlwaysOnTop(false);
+        f.add(new JLabel("Change the settings for the game here. Press bottom button when finished..."), BorderLayout.NORTH);
+
+        actionButton = new JButton("Start Game");
+        actionButton.addActionListener(this);
+        actionButton.setToolTipText("Fill out the above boxes and press this to start the game of BlackJack!");
+
+        JPanel fields = new JPanel(new GridLayout(3, 2));
+
+        // Number of Decks
+        textField1 = new JFormattedTextField(NumberFormat.getIntegerInstance());
+        fields.add(new JLabel("Number of Decks"));
+        textField1.setToolTipText("Each deck contains 52 cards with no Jokers.");
+        textField1.setName("Decks");
+        fields.add(new JLayer<JFormattedTextField>(textField1, layerUI));
+
+        // Number of Players
+        textField2 = new JFormattedTextField(NumberFormat.getIntegerInstance());
+        fields.add(new JLabel("Number of Players"));
+        textField2.setToolTipText("This number includes you, so if n is inputed, there are n-1 computers as players.");
+        textField2.setName("Players");
+        fields.add(new JLayer<JFormattedTextField>(textField2, layerUI));
+
+        // Player Name
+        textField3 = new JFormattedTextField();
+        fields.add(new JLabel("Your Name"));
+        textField3.setToolTipText("Just for display purposes ;)");
+        textField3.setName("Name");
+        textField3.setValue("");
+        fields.add(new JLayer<JFormattedTextField>(textField3, layerUI));
+
+        JPanel options = new JPanel(new BorderLayout());
+        options.add(fields, BorderLayout.CENTER);
+        options.add(actionButton, BorderLayout.SOUTH);
+
+        f.add(options, BorderLayout.CENTER);
+        f.add(new JScrollPane(outputConsole), BorderLayout.SOUTH);
+        f.pack();
+        f.setVisible(true);
+        f.toFront();
+
+        // Go to action performed method now --> "Start Game"
     }
 }
