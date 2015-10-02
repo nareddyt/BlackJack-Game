@@ -157,45 +157,42 @@ public class Game implements ActionListener, KeyListener {
         }
     }
 
-    private static PrintStream outputFile;
-
     @SuppressWarnings("unused")
     public static void main(String[] args) {
-        new Game(); // Just making a new object. Will just like a main method
-                    // for the object.
+        new Game();
     }
 
-    private JButton doubleDown = new JButton("Double Down");
+    private final double STARTING_MONEY = 1500.00;
+    private final Random rand = new Random();
+    private LayerUI<JFormattedTextField> layerUI = new ValidationLayerUI();
+    private PrintStream outputFile;
+
     private boolean endOfRound = false;
+    private boolean isWinner = false;
+    private boolean paused = false;
+
+    private ArrayList<Player> players;
+    private Stack stack;
 
     private JFrame f;
-    private JButton getText = new JButton("OK"); // Make sure to change
-    // 5 choices in the game
-    private JButton hit = new JButton("Hit");
-    private boolean isWinner = false;
-
-    private LayerUI<JFormattedTextField> layerUI = new ValidationLayerUI();
-    private int minutes = 0;
+    private JFrame playerCards;
     private JFrame otherCards;
 
-    private JTextArea outputConsole = new JTextArea(20, 50);
-    private boolean paused = false;
-    private JFrame playerCards;
-    private ArrayList<Player> players;
-    private PopupMenu popup = new PopupMenu();
-
-    private final Random rand = new Random();
-    private int seconds = 0;
+    private JButton hit = new JButton("Hit");
+    private JButton doubleDown = new JButton("Double Down");
     private JButton split = new JButton("Split");
-    private Stack stack;
     private JButton stand = new JButton("Stand");
-    private final double STARTING_MONEY = 1500.00;
-
     private JButton surrender = new JButton("Surrender");
+
+    private JButton getText = new JButton("OK"); // Make sure to change
+
+    private JTextArea outputConsole = new JTextArea(20, 50);
+
     private JFormattedTextField textField1;
     private JFormattedTextField textField2;
     private JFormattedTextField textField3;
 
+    private PopupMenu popup = new PopupMenu();
     private SystemTray tray = SystemTray.getSystemTray();
     private TrayIcon trayIcon = new TrayIcon(Toolkit.getDefaultToolkit().getImage("src/cardImages/Suits.png"));
     private final Dimension userScreen = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
