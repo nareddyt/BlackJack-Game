@@ -11,7 +11,8 @@ import java.util.Random;
  *
  */
 public class Player {
-    public static final double SLIP_OF_HAND = 0.0525;
+    // FIXME test value
+    public static final double SLIP_OF_HAND = 1;
 
     private double bet;
 
@@ -144,9 +145,10 @@ public class Player {
         if (hasCards() && dropped == null) {
             if (rand.nextDouble() < Player.SLIP_OF_HAND) {
                 for (int i = 0; i < hands.size(); i++) {
-                    ArrayList<Card> c = hands.get(0).getCards();
+                    ArrayList<Card> c = hands.get(i).getCards();
                     if (c.size() > 0) {
                         dropped = hands.get(0).getCards().get(c.size() - 1);
+                        break;
                     }
                 }
             } else {
@@ -157,7 +159,7 @@ public class Player {
 
     /**
      * Set money
-     * 
+     *
      * @param money
      */
     public void setMoney(double money) {
