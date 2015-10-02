@@ -355,17 +355,19 @@ public class Game implements ActionListener, KeyListener {
             for (int i = 0; i < viewer.getHandList().get(j).getCards().size(); i++) {
                 ImageIcon image = new ImageIcon(viewer.getHandList().get(j).getCards().get(i).getImage());
                 JLabel l = new JLabel(image);
+
+                // FIXME not working
                 l.setToolTipText("Card #" + (i + 1) + " in hand #" + (j + 1) + " --> " + viewer.getName());
                 panels.add(new JPanel());
 
-                // TODO main player drops cards
+                // TODO main player drops cards logic
                 // If not dropped, just adds card image to the panel
                 panels.get(panels.size() - 1).add(l);
             }
 
         }
 
-        // FIXME change gridlayout value
+        // FIXME row = hand, each element in a row is a card in the hand --> Make this clear
         playerCards.setLayout(new GridLayout(BlackJackTools.getNumberOfHandsInPlayer(viewer), BlackJackTools.getHighestNumberOfCardsInHand(viewer)));
         for (int i = 0; i < panels.size(); i++) {
             playerCards.add(panels.get(i));
@@ -373,41 +375,35 @@ public class Game implements ActionListener, KeyListener {
         playerCards.pack();
         playerCards.setVisible(true);
 
-        panels = new ArrayList<JPanel>();
+        // Dropped by computer cards
+        ArrayList<JPanel> panelsDropped = new ArrayList<JPanel>();
         otherCards = new JFrame("Cards accidentally dropped by the computers...");
         otherCards.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        for (
-
-        Player p : players)
-
-        {
+        for (Player p : players) {
             if (p.getDropped() != null && !p.equals(viewer)) {
                 ImageIcon image = new ImageIcon(p.getDropped().getImage());
                 JLabel l = new JLabel(image);
+
+                // FIXME not working
                 l.setToolTipText("Card dropped by " + p.getName());
-                panels.add(new JPanel());
-                panels.get(panels.size() - 1).add(l);
+                panelsDropped.add(new JPanel());
+                panelsDropped.get(panelsDropped.size() - 1).add(l);
             }
         }
 
-        // FIXME
-        otherCards.setLayout(new GridLayout(1, 2));
-        for (
-
-        int i = 0; i < panels.size(); i++)
-
-        {
-            otherCards.add(panels.get(i));
+        // FIXME gridlayout size make it clear which is what
+        otherCards.setLayout(new GridLayout(1, players.size()));
+        for (int i = 0; i < panelsDropped.size(); i++) {
+            otherCards.add(panelsDropped.get(i));
         }
-        if (panels.size() == 0)
-
-        {
+        if (panelsDropped.size() == 0) {
             otherCards.add(new JLabel("No players have dropped any cards yet..."));
         }
         otherCards.pack();
         otherCards.setVisible(true);
 
+        // TODO positioning of JFrames
     }
 
     public void distributeCards() {
