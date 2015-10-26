@@ -367,7 +367,8 @@ public class Game implements ActionListener, KeyListener {
 
         }
 
-        // FIXME row = hand, each element in a row is a card in the hand --> Make this clear
+        // FIXME row = hand, each element in a row is a card in the hand -->
+        // Make this clear
         playerCards.setLayout(new GridLayout(BlackJackTools.getNumberOfHandsInPlayer(viewer), BlackJackTools.getHighestNumberOfCardsInHand(viewer)));
         for (int i = 0; i < panels.size(); i++) {
             playerCards.add(panels.get(i));
@@ -487,7 +488,8 @@ public class Game implements ActionListener, KeyListener {
         f.pack();
         f.setVisible(true);
 
-        // go to action performed method now --> "Get Other Bets, Start round of cards"
+        // go to action performed method now --> "Get Other Bets, Start round of
+        // cards"
     }
 
     @Override

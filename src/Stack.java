@@ -54,7 +54,8 @@ public class Stack {
     public void shuffle(int amount) {
         for (Deck d : decks) {
             d.shuffle(amount);
-            // Note that this is not a true shuffle, as the decks are not shuffled in between each other
+            // Note that this is not a true shuffle, as the decks are not
+            // shuffled in between each other
         }
     }
 }

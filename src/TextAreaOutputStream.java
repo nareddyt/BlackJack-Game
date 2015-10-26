@@ -99,7 +99,8 @@ public class TextAreaOutputStream extends OutputStream {
                     textArea.append(new String(ba, str, len));
                     break;
                 } catch (Throwable thr) { // sometimes throws a java.lang.Error:
-                                          // Interrupted attempt to aquire write
+                                          // Interrupted attempt to aquire
+                                          // write
                                           // lock
                     if (xa == 9) {
                         thr.printStackTrace();
