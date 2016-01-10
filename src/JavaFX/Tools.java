@@ -1,17 +1,17 @@
 package JavaFX;
 
 /**
- * Created by nareddyt on 1/10/16.
+ * @author Teju Nareddy
  */
 public class Tools {
-    public static String valueTextToNumber(Card.Value value) {
+    public static String rankTextToNumber(Card.Rank rank) {
         String toReturn = "";
 
-        int num = value.ordinal();
+        int num = rank.ordinal();
         if (num >= 2 && num <= 10) {
             toReturn = Integer.toString(num);
         } else {
-            toReturn = value.toString();
+            toReturn = rank.toString();
         }
 
         return toReturn;
