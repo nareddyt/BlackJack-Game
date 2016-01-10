@@ -59,4 +59,24 @@ public class Card implements Comparable<Card> {
             return this.suit.ordinal() - o.suit.ordinal();
         }
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || !(o instanceof Card)) {
+            return false;
+        }
+
+        Card c = (Card) o;
+        return c.rank.equals(this.rank) && c.suit.equals(this.suit);
+    }
+
+    @Override
+    public int hashCode() {
+        return 17 * rank.hashCode() + 19 * suit.hashCode() + 31;
+    }
+
+    @Override
+    public String toString() {
+        return Rank.rankTextToNumber(rank) + " of " + suit.toString();
+    }
 }
