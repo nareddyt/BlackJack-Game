@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
  *
  * @author Teju Nareddy
  */
-public class Card implements Comparable<Card> {
+public class Card implements Cloneable, Comparable<Card> {
 
     private final String imageDir = "src/cardImages/";
     private Image image;
@@ -45,10 +45,7 @@ public class Card implements Comparable<Card> {
      * @return Color
      */
     public Color getColor() {
-        if (suit.equals(Suit.Club) || suit.equals(Suit.Spade)) {
-            return Color.BLACK;
-        }
-        return Color.RED;
+        return Suit.getColor(suit);
     }
 
     @Override
@@ -58,6 +55,12 @@ public class Card implements Comparable<Card> {
         } else {
             return this.suit.ordinal() - o.suit.ordinal();
         }
+    }
+
+    @Override
+    public Card clone() {
+        Card cloneCard = new Card(rank, suit);
+        return cloneCard;
     }
 
     @Override
