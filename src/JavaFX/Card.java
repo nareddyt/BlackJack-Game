@@ -1,6 +1,7 @@
 package JavaFX;
 
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
 /**
  * Class that represents a Card.
@@ -8,14 +9,6 @@ import javafx.scene.image.Image;
  * @author Teju Nareddy
  */
 public class Card implements Comparable<Card> {
-    public enum Suit {
-        Club, Diamond, Heart, Spade
-    }
-
-    public enum Rank {
-        // Order matters! Do not change
-        Ace, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King
-    }
 
     private final String imageDir = "src/cardImages/";
     private Image image;
@@ -30,7 +23,7 @@ public class Card implements Comparable<Card> {
         this.rank = rank;
         this.suit = suit;
 
-        String imageString = imageDir + suit.toString() + "s_" + Tools.rankTextToNumber(rank) + ".png";
+        String imageString = imageDir + suit.toString() + "s_" + Rank.rankTextToNumber(rank) + ".png";
         image = new Image(imageString);
     }
 
@@ -44,6 +37,18 @@ public class Card implements Comparable<Card> {
 
     public Image getImage() {
         return image;
+    }
+
+    /**
+     * Returns the color of the card
+     *
+     * @return Color
+     */
+    public Color getColor() {
+        if (suit.equals(Suit.Club) || suit.equals(Suit.Spade)) {
+            return Color.BLACK;
+        }
+        return Color.RED;
     }
 
     @Override
