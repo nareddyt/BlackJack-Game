@@ -10,7 +10,8 @@ import javafx.scene.paint.Color;
  */
 public class Card implements Cloneable, Comparable<Card> {
 
-    private final String imageDir = "src/cardImages/";
+    // FIXME
+    private final String imageDir = "/home/nareddyt/GitHub/Java/BlackJack-Game/src/cardImages/";
     private Image image;
     private Suit suit;
     private Rank rank;
@@ -24,7 +25,8 @@ public class Card implements Cloneable, Comparable<Card> {
         this.suit = suit;
 
         String imageString = imageDir + suit.toString() + "s_" + Rank.rankTextToNumber(rank) + ".png";
-        image = new Image(imageString);
+        //System.out.println(imageString);
+        //image = new Image(imageString);
     }
 
     public Suit getSuit() {

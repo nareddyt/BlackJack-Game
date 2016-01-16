@@ -6,8 +6,8 @@ public enum Rank {
 
     public static String rankTextToNumber(Rank rank) {
         int num = rank.ordinal();
-        if (num >= 2 && num <= 10) {
-            return Integer.toString(num);
+        if (num >= 1 && num <= 9) {
+            return Integer.toString(num + 1);
         } else {
             return rank.toString();
         }
@@ -15,10 +15,14 @@ public enum Rank {
 
     public static int rankTextToInt(Rank rank) {
         int num = rank.ordinal();
-        if (num >= 11) {
+        if (num >= 10) {
             return 11;
         } else {
-            return num;
+            return num + 1;
         }
+    }
+
+    public static Rank representationNumToRank(int num) {
+        return values()[num - 1];
     }
 }
