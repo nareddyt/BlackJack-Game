@@ -22,9 +22,11 @@ public class Card implements Cloneable, Comparable<Card> {
     public Card(Rank rank, Suit suit) {
         this.rank = rank;
         this.suit = suit;
-        image = new Image("file:" + System.getProperty("user.dir") +
-                imageDir + suit.toString() + "s_" + Rank.rankTextToNumber
-                (rank) + ".png");
+
+        // Automatically initialize image from rank and suit
+        //image = new Image("file:" + System.getProperty("user.dir") +
+        //        imageDir + suit.toString() + "s_" + Rank.rankTextToNumber
+        //        (rank) + ".png");
     }
 
     @Override
