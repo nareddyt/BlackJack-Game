@@ -10,8 +10,7 @@ import javafx.scene.paint.Color;
  */
 public class Card implements Cloneable, Comparable<Card> {
 
-    // FIXME
-    private final String imageDir = "/home/nareddyt/GitHub/Java/BlackJack-Game/src/cardImages/";
+    private final String imageDir = "/src/cardImages/";
     private Image image;
     private Suit suit;
     private Rank rank;
@@ -23,31 +22,9 @@ public class Card implements Cloneable, Comparable<Card> {
     public Card(Rank rank, Suit suit) {
         this.rank = rank;
         this.suit = suit;
-
-        String imageString = imageDir + suit.toString() + "s_" + Rank.rankTextToNumber(rank) + ".png";
-        //System.out.println(imageString);
-        //image = new Image(imageString);
-    }
-
-    public Suit getSuit() {
-        return suit;
-    }
-
-    public Rank getRank() {
-        return rank;
-    }
-
-    public Image getImage() {
-        return image;
-    }
-
-    /**
-     * Returns the color of the card
-     *
-     * @return Color
-     */
-    public Color getColor() {
-        return Suit.getColor(suit);
+        image = new Image("file:" + System.getProperty("user.dir") +
+                imageDir + suit.toString() + "s_" + Rank.rankTextToNumber
+                (rank) + ".png");
     }
 
     @Override
@@ -59,10 +36,30 @@ public class Card implements Cloneable, Comparable<Card> {
         }
     }
 
+    /**
+     * Returns the color of the card
+     *
+     * @return Color
+     */
+    public Color getColor() {
+        return Suit.getColor(suit);
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public Rank getRank() {
+        return rank;
+    }
+
+    public Suit getSuit() {
+        return suit;
+    }
+
     @Override
-    public Card clone() {
-        Card cloneCard = new Card(rank, suit);
-        return cloneCard;
+    public int hashCode() {
+        return 17 * rank.hashCode() + 19 * suit.hashCode() + 31;
     }
 
     @Override
@@ -76,8 +73,8 @@ public class Card implements Cloneable, Comparable<Card> {
     }
 
     @Override
-    public int hashCode() {
-        return 17 * rank.hashCode() + 19 * suit.hashCode() + 31;
+    public Card clone() {
+        return new Card(rank, suit);
     }
 
     @Override

@@ -29,8 +29,13 @@ public class Deck {
         //shuffle();
     }
 
-    private void shuffle() {
-        Collections.shuffle(cards);
+    public static void main(String[] args) throws InvalidDeckNumberException {
+        Deck d = new Deck(1);
+        Card c;
+        do {
+            c = d.drawCard();
+            System.out.println(c);
+        } while (d.hasMoreCards());
     }
 
     public Card drawCard() {
@@ -41,13 +46,7 @@ public class Deck {
         return !cards.empty();
     }
 
-    public static void main(String[] args) throws InvalidDeckNumberException {
-        Deck d = new Deck(1);
-
-        Card c;
-        do {
-            c = d.drawCard();
-            System.out.println(c);
-        } while (d.hasMoreCards());
+    private void shuffle() {
+        Collections.shuffle(cards);
     }
 }
